@@ -1,0 +1,104 @@
+<Window x:Class="NewsApp.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="設定" Height="620" Width="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="設定" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,20"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <!-- API Key -->
+                <StackPanel Margin="0,0,0,20">
+                    <TextBlock Text="Claude APIキー" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <PasswordBox x:Name="ApiKeyBox" Height="36"
+                                 ui:ControlHelper.PlaceholderText="sk-ant-..."
+                                 PasswordChanged="ApiKeyBox_PasswordChanged"/>
+                    <TextBlock Margin="0,4,0,0" FontSize="12" Opacity="0.6"
+                               Text="Anthropic Console (console.anthropic.com) で取得できます"/>
+                </StackPanel>
+
+                <!-- Model -->
+                <StackPanel Margin="0,0,0,20">
+                    <TextBlock Text="使用モデル" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="ModelCombo" Height="36" Width="300" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="claude-opus-4-5" Tag="claude-opus-4-5"/>
+                        <ComboBoxItem Content="claude-sonnet-4-5" Tag="claude-sonnet-4-5"/>
+                        <ComboBoxItem Content="claude-haiku-4-5" Tag="claude-haiku-4-5"/>
+                    </ComboBox>
+                    <TextBlock Margin="0,4,0,0" FontSize="12" Opacity="0.6"
+                               Text="Opus: 高精度・遅い　Sonnet: バランス型　Haiku: 高速・低コスト"/>
+                </StackPanel>
+
+                <!-- Web Search -->
+                <StackPanel Margin="0,0,0,20">
+                    <CheckBox x:Name="WebSearchCheck" Content="Web検索を使用する（最新情報の取得に必要）" IsChecked="True"/>
+                    <TextBlock Margin="24,4,0,0" FontSize="12" Opacity="0.6"
+                               Text="OFFにするとモデルの学習データのみ使用（古い情報になる場合あり）"/>
+                </StackPanel>
+
+                <!-- Dark Mode -->
+                <CheckBox x:Name="DarkModeCheck" Content="ダークモード" Margin="0,0,0,20"/>
+
+                <!-- Categories -->
+                <StackPanel>
+                    <TextBlock Text="表示カテゴリ" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="12" Opacity="0.6" Margin="0,0,0,8"
+                               Text="表示するカテゴリを選択できます。並び順は上下ボタンで変更。"/>
+                    <Border BorderThickness="1" CornerRadius="6"
+                            BorderBrush="{DynamicResource SystemControlBackgroundListMediumBrush}">
+                        <ListBox x:Name="CategoryList" Height="200"
+                                 SelectionMode="Single"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled}"
+                                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Icon}"
+                                                   FontSize="16" VerticalAlignment="Center"
+                                                   Margin="0,0,8,0"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Name}"
+                                                   VerticalAlignment="Center"/>
+                                        <Button Grid.Column="3" Content="↑" Width="28" Height="28"
+                                                Margin="4,0,0,0" Click="MoveUp_Click" Tag="{Binding}"/>
+                                        <Button Grid.Column="4" Content="↓" Width="28" Height="28"
+                                                Margin="4,0,0,0" Click="MoveDown_Click" Tag="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
+            <Button Content="キャンセル" Width="100" Height="36" Margin="0,0,8,0" Click="Cancel_Click"/>
+            <Button Content="保存" Width="100" Height="36"
+                    Style="{StaticResource AccentButtonStyle}" Click="Save_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,52 @@
+<Application x:Class="NewsApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             xmlns:conv="clr-namespace:NewsApp.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemeResources/>
+                <ui:XamlControlsResources/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+            <conv:BoolToVisibilityConverter x:Key="InvBoolToVis" Invert="True"/>
+            <conv:InverseBoolConverter x:Key="InvBool"/>
+            <conv:NullToVisibilityConverter x:Key="NullToVis"/>
+            <conv:NullToVisibilityConverter x:Key="NullToInvVis" Invert="True"/>
+
+            <!-- Sidebar selected item style -->
+            <Style x:Key="SidebarItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="12,10"/>
+                <Setter Property="Margin" Value="4,2"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border x:Name="Bd" CornerRadius="8"
+                                    Background="Transparent"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Bd" Property="Background"
+                                            Value="{DynamicResource SystemControlHighlightListAccentLowBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background"
+                                            Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
